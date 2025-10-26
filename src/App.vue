@@ -100,6 +100,21 @@ function addCart(value) {
   }
 }
 
+function addQuantity(item) {
+  console.log(item.quantity++);
+
+  console.log(cartList.value.quantity);
+}
+function reduceQuantity(item) {
+  if (item.quantity <= 1) {
+    item.quantity = 0;
+  } else {
+    console.log(item.quantity--);
+  }
+
+  console.log(cartList.value.quantity);
+}
+
 const cartAllTotal = computed(() => {
   let total = 0;
   for (let i = 0; i < cartList.value.length; i++) {
@@ -127,12 +142,18 @@ const cartAllTotal = computed(() => {
         class="border rounded-lg p-4 bg-white"
       >
         <div class="thumb w-full h-40 overflow-hidden rounded">
-          <img :src="item.image_url" alt="" class="w-full h-full object-cover" />
+          <img
+            :src="item.image_url"
+            alt=""
+            class="w-full h-full object-cover"
+          />
         </div>
 
         <div class="info mt-3">
           <h3 class="title text-base font-medium">{{ item.name }}</h3>
-          <p class="price text-gray-700 mt-1">NT$ {{ item.price.toLocaleString() }}</p>
+          <p class="price text-gray-700 mt-1">
+            NT$ {{ item.price.toLocaleString() }}
+          </p>
         </div>
 
         <button
@@ -144,21 +165,40 @@ const cartAllTotal = computed(() => {
       </article>
     </div>
 
-
-    <div v-else class="text-center text-sm text-gray-500 py-10">
-      載入中…
-    </div>
-
+    <div v-else class="text-center text-sm text-gray-500 py-10">載入中…</div>
 
     <div class="cart-list mt-8">
       <h3 class="text-lg font-semibold mb-3">購物車</h3>
       <div v-if="cartList.length" class="space-y-3">
-        <div class="cart-item border rounded p-3" v-for="item in cartList" :key="item.id">
+        <div
+          class="cart-item border rounded p-3"
+          v-for="item in cartList"
+          :key="item.id"
+        >
           <div class="cart-item-name font-medium">{{ item.name }}</div>
           <div class="cart-item-price text-sm text-gray-700">
             單價：NT$ {{ item.price.toLocaleString() }}
           </div>
-          <div class="cart-item-quantity text-sm">數量：{{ item.quantity }}</div>
+          <div class="cart-item-quantity text-sm">
+            <div class="flex border justify-start items-center gap-3">
+              <span class="text-xl">數量：</span>
+
+              <button
+                class="bg-amber-600 w-[50px] h-[30px] rounded-xl flex justify-center items-center"
+                @click="reduceQuantity(item)"
+              >
+                <i class="fa-solid fa-minus"></i>
+              </button>
+
+              {{ item.quantity }}
+              <button
+                class="bg-amber-600 w-[50px] h-[30px] rounded-xl flex justify-center items-center"
+                @click="addQuantity(item)"
+              >
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
           <div class="cart-item-subtotal text-sm">
             小計：NT$ {{ (item.quantity * item.price).toLocaleString() }}
           </div>
@@ -168,10 +208,12 @@ const cartAllTotal = computed(() => {
         </div>
       </div>
 
-      <div v-else class="cart-total border rounded p-3 text-gray-600 bg-gray-50">
+      <div
+        v-else
+        class="cart-total border rounded p-3 text-gray-600 bg-gray-50"
+      >
         購物車是空的
       </div>
     </div>
   </section>
 </template>
-
