@@ -21,34 +21,41 @@ export const useCart = () => {
 
   // 加入購物車
   function addCart(value) {
-    console.log(value);
+    // console.log(value);
     // cartList.value.push(value);
 
     // cartList.value = [...cartList.value, value];
 
     const findItem = cartList.value.find((item) => item.id == value.id);
 
-    console.log(findItem);
+    // console.log(findItem);
 
     if (findItem) {
-      console.log("存在");
+      // console.log("存在");
       findItem.quantity++;
     } else {
-      console.log("不存在");
+      // console.log("不存在");
       cartList.value = [...cartList.value, { ...value, quantity: 1 }];
-      console.log("原始", value);
-      console.log("展開後：", { ...value, quantity: 1 });
+      // console.log("原始", value);
+      // console.log("展開後：", { ...value, quantity: 1 });
     }
   }
 
   function addQuantity(item) {
     console.log(item.quantity++);
 
-    console.log(cartList.value.quantity);
+    // console.log(cartList.value.quantity);
+    console.log("++當前購物項目", cartList.value);
   }
   function reduceQuantity(item) {
+    console.log("--當前購物項目", cartList.value);
+
     if (item.quantity <= 1) {
       item.quantity = 0;
+      const reduceItem = cartList.value.filter((item) => item.quantity !== 0);
+      console.log("當前為0，", reduceItem);
+
+      cartList.value = reduceItem;
     } else {
       console.log(item.quantity--);
     }
