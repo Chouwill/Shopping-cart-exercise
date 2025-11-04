@@ -1,9 +1,11 @@
 <script setup>
+import { ref } from "vue";
 import { useCart } from "./composables/useCart";
+import ComposablesVsPiniaDemo from "./components/ComposablesVsPiniaDemo.vue";
+import MemoryLeakDemo from "./components/MemoryLeakDemo.vue";
 
-// console.log(useCart);
-
-// console.log(useCart.products);
+// 切換顯示模式：'cart' | 'demo' | 'memory'
+const viewMode = ref("cart");
 
 const {
   products,
@@ -20,7 +22,51 @@ console.log(products.value);
 </script>
 
 <template>
-  <section class="products max-w-md mx-auto p-4">
+  <!-- 切換按鈕 -->
+  <div class="fixed top-4 right-4 z-50 flex gap-2">
+    <button
+      @click="viewMode = 'cart'"
+      class="px-4 py-2 rounded-lg shadow-lg font-semibold transition-colors"
+      :class="
+        viewMode === 'cart'
+          ? 'bg-green-500 text-white'
+          : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+      "
+    >
+      購物車
+    </button>
+    <button
+      @click="viewMode = 'demo'"
+      class="px-4 py-2 rounded-lg shadow-lg font-semibold transition-colors"
+      :class="
+        viewMode === 'demo'
+          ? 'bg-blue-500 text-white'
+          : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+      "
+    >
+      示範
+    </button>
+    <button
+      @click="viewMode = 'memory'"
+      class="px-4 py-2 rounded-lg shadow-lg font-semibold transition-colors"
+      :class="
+        viewMode === 'memory'
+          ? 'bg-red-500 text-white'
+          : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+      "
+    >
+      記憶體測試
+    </button>
+  </div>
+
+  <!-- 示範組件：Composables vs Pinia -->
+  <ComposablesVsPiniaDemo v-if="viewMode === 'demo'" />
+
+  <!-- 記憶體示範組件 -->
+  <MemoryLeakDemo v-if="viewMode === 'memory'" />
+
+  <!-- 原本的購物車 -->
+  <section v-if="viewMode === 'cart'" class="products max-w-md mx-auto p-4">
     <header class="section-header text-center mb-4">
       <h2 class="text-lg font-semibold">商品列表</h2>
       <p class="subtitle text-sm text-gray-500">固定假資料示意</p>
