@@ -12,6 +12,8 @@ const {
   addCart,
   addQuantity,
   reduceQuantity,
+  deleteItem,
+  allClearCart,
   cartAllTotal,
 } = useCart();
 
@@ -53,20 +55,34 @@ console.log(products.value);
         </button>
       </article>
     </div>
-
     <div class="text-center text-sm text-gray-500 py-10">載入中…</div>
 
     <div class="cart-list mt-8">
       <h3 class="text-lg font-semibold mb-3">購物車</h3>
+      <button
+        @click="allClearCart"
+        class="w-[100px] h-[35px] bg-gray-300 rounded"
+      >
+        重置購物車
+      </button>
+
       <div v-if="cartList.length" class="space-y-3">
         <div
           class="cart-item border rounded p-3"
           v-for="item in cartList"
           :key="item.id"
         >
-          <div class="cart-item-name font-medium">{{ item.name }}</div>
-          <div class="cart-item-price text-sm text-gray-700">
-            單價：NT${{ item.price }}
+          <div class="flex flex-col">
+            <div class="cart-item-name font-medium">{{ item.name }}</div>
+            <div class="cart-item-price text-sm text-gray-700">
+              單價：NT${{ item.price }}
+            </div>
+            <button
+              @click="deleteItem(item)"
+              class="w-[100px] h-[35px] bg-gray-300 rounded"
+            >
+              刪除
+            </button>
           </div>
           <div class="cart-item-quantity text-sm">
             <div class="flex border justify-start items-center gap-3">

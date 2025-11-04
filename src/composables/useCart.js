@@ -63,6 +63,20 @@ export const useCart = () => {
     console.log(cartList.value.quantity);
   }
 
+  function deleteItem(selectItem) {
+    console.log("目前要刪除項目", selectItem);
+    const deleteResult = cartList.value.filter((item) => {
+      console.log("filter", item);
+      return item.id !== selectItem.id;
+    });
+    console.log("已被刪除項目  deleteResult", deleteResult);
+    cartList.value = deleteResult;
+  }
+
+  function allClearCart() {
+    cartList.value = [];
+  }
+
   const cartAllTotal = computed(() => {
     let total = 0;
     for (let i = 0; i < cartList.value.length; i++) {
@@ -82,6 +96,8 @@ export const useCart = () => {
     addCart,
     addQuantity,
     reduceQuantity,
+    deleteItem,
+    allClearCart,
     cartAllTotal,
   };
 };
